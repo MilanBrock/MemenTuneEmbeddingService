@@ -41,3 +41,22 @@ export async function openAIJSONRequest(prompt: string, userMessage: string): Pr
         return {answer: "No response from OpenAI"};
     }
 }
+
+export async function openAIEmbeddingRequest(inputText: string): Promise<number[]> {
+    const openai = new OpenAI();
+
+    // Stuur request naar OpenAI
+    const response = await openai.embeddings.create({
+        model: "text-embedding-3-small",
+        input: inputText,
+        encoding_format: "float",
+    });
+
+
+    if (response?.data?.[0] || response.data[0].embedding) {
+        return response.data[0].embedding;
+	} else {
+        console.error("OpenAIAnswer", "No response from OpenAI");
+        return [];
+    }
+}

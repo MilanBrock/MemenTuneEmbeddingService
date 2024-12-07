@@ -4,6 +4,7 @@ import express from 'express';
 import { connectDB } from './config/database';
 import mainRoutes from './routes/main';
 import { connectMessageQueue } from './config/messagequeue';
+import { setupPrometheus } from './utils/prometheus';
 
 
 const app = express();
@@ -18,6 +19,9 @@ if (process.env.DATABASE_ENABLE === "1") {
 if (process.env.MESSAGE_QUEUE_ENABLE === "1") {
   connectMessageQueue();
 }
+
+// Add Prometheus middleware
+setupPrometheus(app);
 
 // Middleware to parse JSON bodies
 app.use(express.json());

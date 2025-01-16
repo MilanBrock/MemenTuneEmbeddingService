@@ -29,6 +29,12 @@ app.use(express.json());
 // Routes
 app.use('/embedding', mainRoutes);
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+
+if (process.env.MODE !== 'test'){
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
+
+
+export default app

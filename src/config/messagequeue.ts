@@ -1,5 +1,5 @@
 import amqp from 'amqplib';
-import { listenToSongSubmissionEvent } from '../utils/messagequeue'; 
+import { listenToUserDescriptionEvent } from '../utils/messagequeue'; 
 
 
 let channel: amqp.Channel;
@@ -15,7 +15,7 @@ export async function connectMessageQueue() {
     }
 
     channel = await connection.createChannel();
-    listenToSongSubmissionEvent();
+    listenToUserDescriptionEvent();
     console.log('Connected to RabbitMQ');
   } catch (error) {
     console.error('Failed to connect to RabbitMQ:', error);

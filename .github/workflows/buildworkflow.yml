@@ -1,4 +1,4 @@
-name: Build Application
+name: Build, Test, and Deploy
 
 on:
   pull_request:
@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       # Checkout the code
       - name: Checkout code
@@ -18,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16 # Change to the version you need
+          node-version: 16 
           cache: 'npm'
 
       # Install dependencies
@@ -29,9 +28,43 @@ jobs:
       - name: Build the application
         run: npm run build
 
+  test:
+    runs-on: ubuntu-latest
+    name: Run Integration Tests
+    needs: build
+
+    steps:
+      # 1. Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16 
+          cache: 'npm'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Create .env file with secrets
+      - name: Create .env file
+        run: |
+          cat <<EOF > .env
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          EOF
+
+      # 5. Run integration tests
+      - name: Run tests
+        run: npm test
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
   docker-hub:
       runs-on: ubuntu-latest
-      needs: build
+      needs: test
       steps:
         # Checkout the code
         - name: Checkout code

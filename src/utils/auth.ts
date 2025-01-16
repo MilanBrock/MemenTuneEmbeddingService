@@ -9,10 +9,12 @@ import jwt from 'jsonwebtoken';
  */
 export const deconstructJWT = (token: string, userId: string): boolean => {
     const secretKey = process.env.JWT_SECRET;
+
     if (!secretKey) {
         console.error('Secret key not found in environment variables');
         return false;
     }
+
 
     try {
         if (token.startsWith("Bearer ")) {
@@ -21,7 +23,9 @@ export const deconstructJWT = (token: string, userId: string): boolean => {
         console.log("verifying token...")
         const decoded = jwt.verify(token, secretKey) as any;
         console.log(decoded)
+
         if (decoded) {
+
             return true;
         } else {
             console.error('Token origin does not match or userId does not match');

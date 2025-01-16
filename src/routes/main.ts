@@ -1,10 +1,11 @@
 // src/routes/users.ts
 import { Router } from 'express';
-import { CreateSongEmbedding } from '../controllers/mainController';
+import { SongSubmissionEmbedding, SongSubmissionEmbeddingLocal } from '../controllers/mainController';
 
 const router = Router();
 
-router.post("/song", CreateSongEmbedding)
+router.post("/song", SongSubmissionEmbedding)
+router.post("/songlocal", SongSubmissionEmbeddingLocal)
 
 
 export default router;
